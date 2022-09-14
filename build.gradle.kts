@@ -2,7 +2,7 @@ plugins {
     id("java")
     id("groovy")
     id("application")
-    id("org.jetbrains.kotlin.jvm").version("1.3.41")
+    kotlin("jvm") version "1.7.10"
 }
 
 repositories {
