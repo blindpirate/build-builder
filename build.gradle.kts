@@ -36,7 +36,7 @@ java {
 }
 
 application {
-    mainClassName = "org.gradle.builds.Main"
+    mainClass.set("org.gradle.builds.Main")
 }
 
 tasks {
