@@ -3,6 +3,7 @@ plugins {
     id("groovy")
     id("application")
     kotlin("jvm") version "1.7.20"
+    id("org.gradle.test-retry") version "1.4.1"
 }
 
 repositories {
@@ -31,6 +32,8 @@ application {
     mainClass.set("org.gradle.builds.Main")
 }
 
+val isCI = System.getenv().containsKey("CI")
+
 testing {
     suites {
         val test by getting(JvmTestSuite::class) {
@@ -40,6 +43,12 @@ testing {
                     testTask {
                         maxParallelForks = 2
                         systemProperty("skipTestCleanup", System.getProperty("skipTestCleanup"))
+                        retry {
+                            maxRetries.set(if (isCI) 1 else 0)
+                            maxFailures.set(20)
+                            // TODO set this to `true` once less flaky
+                            failOnPassedAfterRetry.set(!isCI)
+                        }
                     }
                 }
             }

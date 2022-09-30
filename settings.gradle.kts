@@ -4,8 +4,10 @@ plugins {
 
 rootProject.name = "build-builder"
 
-gradleEnterprise {
-    if (System.getenv("CI") != null) {
+val isCI = System.getenv().containsKey("CI")
+
+if (isCI) {
+    gradleEnterprise {
         buildScan {
             publishAlways()
             termsOfServiceUrl = "https://gradle.com/terms-of-service"
