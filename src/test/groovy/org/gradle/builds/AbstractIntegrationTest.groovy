@@ -29,7 +29,11 @@ abstract class AbstractIntegrationTest extends Specification {
 
     protected File getTempDir() {
         if (tmpDir == null) {
-            tmpDir = Files.createTempDirectory(mkdirs(new File(rootTempDir, "tmp")).toPath(), "test").toFile()
+            if (skipTestCleanup) {
+                tmpDir = Files.createTempDirectory(mkdirs(new File(rootTempDir,"B")).toPath(), "").toFile()
+            } else {
+                tmpDir = Files.createTempDirectory("B").toFile()
+            }
         }
         return tmpDir
     }
@@ -42,7 +46,7 @@ abstract class AbstractIntegrationTest extends Specification {
     }
 
     def setup() {
-        projectDir = mkdirs(tempDir, "generated-root-dir")
+        projectDir = mkdirs(tempDir, "B")
         build = new BuildLayout(projectDir)
     }
 
