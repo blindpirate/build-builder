@@ -271,8 +271,10 @@ abstract class AbstractIntegrationTest extends Specification {
             def pluginsList = ['java', 'application', 'swift', 'android', 'cpp']
             assert text.readLines().every { line ->
                 if (!line.contains("plugin")) true
-                else pluginsList.every { plugin ->
-                    !line.contains(plugin)
+                else {
+                    pluginsList.every { plugin ->
+                        !line.contains(plugin) || line.contains('swiftpm-export')
+                    }
                 }
             }
         }
