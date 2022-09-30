@@ -16,7 +16,7 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
-    runtimeOnly("org.slf4j:slf4j-simple:1.7.25")
+    runtimeOnly("org.slf4j:slf4j-simple:2.0.1")
 
     testImplementation(gradleTestKit())
 }
