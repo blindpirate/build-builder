@@ -268,7 +268,13 @@ abstract class AbstractIntegrationTest extends Specification {
             isProject()
             def text = buildFile.text
             // Could find a better way to verify this
-            assert !text.contains('java') && !text.contains('application') && !text.contains('swift') && !text.contains('android') && !text.contains('cpp')
+            def pluginsList = ['java', 'application', 'swift', 'android', 'cpp']
+            assert text.readLines().every { line ->
+                if (!line.contains("plugin")) true
+                else pluginsList.every { plugin ->
+                    !line.contains(plugin)
+                }
+            }
         }
 
         void containsFilesWithExtension(File dir, String extension) {
