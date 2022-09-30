@@ -1,0 +1,37 @@
+name: Build with Gradle
+
+on:
+  push:
+
+jobs:
+  build-the-build-builder:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v3
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: "Setup Gradle"
+        uses: gradle/gradle-build-action@v2
+        with:
+          gradle-home-cache-cleanup: true
+
+      - name: "Execute Gradle build"
+        run: ./gradlew build
+
+      - name: "Add build scan URL as PR comment"
+        uses: actions/github-script@v5
+        if: github.event_name == 'pull_request' && failure()
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '❌ ${{ github.workflow }} failed: ${{ steps.gradle.outputs.build-scan-url }}'
+            })
