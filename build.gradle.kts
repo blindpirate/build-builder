@@ -37,8 +37,9 @@ testing {
             useSpock()
             targets {
                 all {
-                    testTask.configure {
+                    testTask {
                         maxParallelForks = 2
+                        systemProperty("skipTestCleanup", System.getProperty("skipTestCleanup"))
                     }
                 }
             }

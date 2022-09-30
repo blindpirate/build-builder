@@ -6,25 +6,32 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import org.gradle.testkit.runner.GradleRunner
 import org.opentest4j.AssertionFailedError
 import spock.lang.Specification
-import spock.lang.TempDir
 
+import java.nio.file.Files
 import java.util.function.Consumer
 import java.util.regex.Pattern
 
 abstract class AbstractIntegrationTest extends Specification {
-    @TempDir
-    File tmpDir
-    static File rootTmpDir
+    private static boolean skipTestCleanup = Boolean.getBoolean("skipTestCleanup")
+    private static File rootTmpDir
+    private File tmpDir
     File projectDir
     File userHomeDir
     String gradleVersion = "5.0"
     BuildLayout build
 
-    static File getRootTempDir() {
+    protected static File getRootTempDir() {
         if (rootTmpDir == null) {
             rootTmpDir = mkdirs(new File("build/tmp/tests"))
         }
         return rootTmpDir
+    }
+
+    protected File getTempDir() {
+        if (tmpDir == null) {
+            tmpDir = Files.createTempDirectory(mkdirs(new File(rootTempDir, "tmp")).toPath(), "test").toFile()
+        }
+        return tmpDir
     }
 
     private static File mkdirs(File base, String path = null) {
@@ -35,12 +42,18 @@ abstract class AbstractIntegrationTest extends Specification {
     }
 
     def setup() {
-        projectDir = mkdirs(tmpDir, "generated-root-dir")
+        projectDir = mkdirs(tempDir, "generated-root-dir")
         build = new BuildLayout(projectDir)
     }
 
+    def cleanup() {
+        if (!skipTestCleanup) {
+            assert tempDir.deleteDir()
+        }
+    }
+
     void useIsolatedUserHome() {
-        userHomeDir = mkdirs(tmpDir, "user-home")
+        userHomeDir = mkdirs(tempDir, "user-home")
     }
 
     File file(String path) {
