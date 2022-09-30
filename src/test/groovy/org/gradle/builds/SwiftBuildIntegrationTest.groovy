@@ -28,6 +28,9 @@ class SwiftBuildIntegrationTest extends AbstractIntegrationTest {
         rootProject.dependsOn()
 
         build.buildSucceeds(":installDebug")
+        println("####################################################################################")
+        build.file("build").eachDirRecurse { println(build.rootDir.relativePath(it)) }
+        println("####################################################################################")
         build.app("build/install/main/debug/testApp").succeeds()
 
         build.buildSucceeds("build")
