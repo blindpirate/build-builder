@@ -5,9 +5,9 @@ import org.gradle.builds.model.*
 class KotlinModelAssembler : LanguageSpecificProjectConfigurer<KotlinApplication, KotlinLibrary>(KotlinApplication::class.java, KotlinLibrary::class.java) {
     override fun rootProject(settings: Settings, project: Project) {
         val buildScript = project.buildScript
-        buildScript.buildScriptBlock().jcenter()
+        buildScript.buildScriptBlock().mavenCentral()
         buildScript.requireOnBuildScriptClasspath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.41")
-        buildScript.allProjects().jcenter()
+        buildScript.allProjects().mavenCentral()
     }
 
     override fun application(settings: Settings, project: Project, application: KotlinApplication) {

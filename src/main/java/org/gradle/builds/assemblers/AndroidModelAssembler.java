@@ -22,7 +22,7 @@ public class AndroidModelAssembler extends JvmModelAssembler<AndroidApplication,
             buildScript.buildScriptBlock().mavenLocal();
         }
         buildScript.buildScriptBlock().google();
-        buildScript.buildScriptBlock().jcenter();
+        buildScript.buildScriptBlock().mavenCentral();
         buildScript.requireOnBuildScriptClasspath("com.android.tools.build:gradle:" + pluginVersion);
         buildScript.allProjects().google();
     }

@@ -9,7 +9,7 @@ class GradlePluginModelAssembler : ComponentSpecificProjectConfigurer<GradlePlug
     override fun configure(settings: Settings, project: Project, component: GradlePluginComponent) {
         val buildScript = project.buildScript
         buildScript.requirePlugin("java-gradle-plugin")
-        buildScript.jcenter()
+        buildScript.mavenCentral()
         buildScript.dependsOnExternal("testImplementation", "junit:junit:4.12")
 
         val id = component.id!!
