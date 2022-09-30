@@ -5,8 +5,7 @@ import org.gradle.builds.model.*;
 import java.util.Collections;
 
 public class AndroidModelAssembler extends JvmModelAssembler<AndroidApplication, AndroidLibrary> {
-//    public static final String defaultVersion = "3.4.1";
-    public static final String defaultVersion = "3.6.0";
+    public static final String defaultVersion = "3.4.1";
     private static final PublishedLibrary<JavaLibraryApi> supportUtils = new PublishedLibrary<>("support-core-utils", new ExternalDependencyDeclaration("com.android.support:support-core-utils:25.1.0"), new JavaLibraryApi("support-core-utils", Collections.singletonList(JavaClassApi.field("android.support.v4.app.NavUtils", "PARENT_ACTIVITY"))));
     private final String pluginVersion;
 

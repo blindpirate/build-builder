@@ -30,7 +30,7 @@ abstract class AbstractIntegrationTest extends Specification {
     protected File getTempDir() {
         if (tmpDir == null) {
             if (skipTestCleanup) {
-                tmpDir = Files.createTempDirectory(mkdirs(new File(rootTempDir,"B")).toPath(), "").toFile()
+                tmpDir = Files.createTempDirectory(mkdirs(new File(rootTempDir, "B")).toPath(), "").toFile()
             } else {
                 tmpDir = Files.createTempDirectory("B").toFile()
             }
@@ -52,7 +52,9 @@ abstract class AbstractIntegrationTest extends Specification {
 
     def cleanup() {
         if (!skipTestCleanup) {
-            assert tempDir.deleteDir()
+            if (!tempDir.deleteDir()) {
+                println("UNABLE TO DELETE DIRECTORY $tempDir")
+            }
         }
     }
 
