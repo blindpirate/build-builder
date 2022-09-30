@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
 
-    implementation("io.airlift:airline:0.7")
+    implementation("io.airlift:airline:0.9")
     implementation("org.eclipse.jgit:org.eclipse.jgit:4.9.1.201712030800-r")
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
