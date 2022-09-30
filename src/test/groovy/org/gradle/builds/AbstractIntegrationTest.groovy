@@ -1,20 +1,19 @@
 package org.gradle.builds
 
 import groovy.io.FileType
-import junit.framework.AssertionFailedError
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import org.gradle.testkit.runner.GradleRunner
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
+import org.opentest4j.AssertionFailedError
 import spock.lang.Specification
+import spock.lang.TempDir
 
 import java.util.function.Consumer
 import java.util.regex.Pattern
 
 abstract class AbstractIntegrationTest extends Specification {
-    @Rule
-    TemporaryFolder tmpDir = new TemporaryFolder(getRootTempDir())
+    @TempDir
+    File tmpDir
     static File rootTmpDir
     File projectDir
     File userHomeDir
@@ -23,20 +22,25 @@ abstract class AbstractIntegrationTest extends Specification {
 
     static File getRootTempDir() {
         if (rootTmpDir == null) {
-            def file = new File("build/tmp/tests").canonicalFile
-            file.mkdirs()
-            rootTmpDir = file
+            rootTmpDir = mkdirs(new File("build/tmp/tests"))
         }
         return rootTmpDir
     }
 
+    private static File mkdirs(File base, String path = null) {
+        def dir = path ? new File(base, path) : base
+        dir = dir.canonicalFile
+        dir.mkdirs()
+        return dir
+    }
+
     def setup() {
-        projectDir = tmpDir.newFolder("generated-root-dir")
+        projectDir = mkdirs(tmpDir, "generated-root-dir")
         build = new BuildLayout(projectDir)
     }
 
     void useIsolatedUserHome() {
-        userHomeDir = tmpDir.newFolder("user-home")
+        userHomeDir = mkdirs(tmpDir, "user-home")
     }
 
     File file(String path) {
