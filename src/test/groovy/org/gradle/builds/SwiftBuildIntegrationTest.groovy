@@ -25,10 +25,7 @@ class SwiftBuildIntegrationTest extends AbstractSwiftIntegrationTest {
         rootProject.dependsOn()
 
         build.buildSucceeds(":installDebug")
-        println("####################################################################################")
-        build.file("build").eachDirRecurse { println(build.rootDir.relativePath(it)) }
-        println("####################################################################################")
-        build.app("build/install/main/debug/testApp").succeeds()
+        build.app("build/install/main/debug/TestApp").succeeds()
 
         build.buildSucceeds("build")
     }
@@ -54,7 +51,7 @@ class SwiftBuildIntegrationTest extends AbstractSwiftIntegrationTest {
         libProject.dependsOn()
 
         build.buildSucceeds(":installDebug")
-        build.app("build/install/main/debug/testApp").succeeds()
+        build.app("build/install/main/debug/TestApp").succeeds()
 
         build.buildSucceeds("build")
     }
@@ -69,7 +66,7 @@ class SwiftBuildIntegrationTest extends AbstractSwiftIntegrationTest {
         build.rootProject.isSwiftApplication()
 
         build.buildSucceeds(":installDebug")
-        build.app("build/install/main/debug/testApp").succeeds()
+        build.app("build/install/main/debug/TestApp").succeeds()
 
         build.buildSucceeds("build")
 
@@ -96,7 +93,7 @@ class SwiftBuildIntegrationTest extends AbstractSwiftIntegrationTest {
         build.project(":libcore").isSwiftLibrary()
 
         build.buildSucceeds(":installDebug")
-        build.app("build/install/main/debug/testApp").succeeds()
+        build.app("build/install/main/debug/TestApp").succeeds()
 
         build.buildSucceeds("build")
 
@@ -127,7 +124,7 @@ class SwiftBuildIntegrationTest extends AbstractSwiftIntegrationTest {
         build.file("Tests/libTests").list() as Set == ["LibTest.swift", "LibImplApiTest.swift", "LibImplCoreTest.swift"] as Set
 
         build.buildSucceeds(":installDebug")
-        build.app("build/install/main/debug/testApp").succeeds()
+        build.app("build/install/main/debug/TestApp").succeeds()
 
         build.buildSucceeds("build")
     }
@@ -153,7 +150,7 @@ class SwiftBuildIntegrationTest extends AbstractSwiftIntegrationTest {
 
         build.buildSucceeds(":installDebug")
 
-        def app = build.app("build/install/main/debug/testApp")
+        def app = build.app("build/install/main/debug/TestApp")
         app.succeeds()
 
         build.buildSucceeds("build")
