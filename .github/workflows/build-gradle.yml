@@ -22,6 +22,9 @@ jobs:
         with:
           ndk-version: r20b
 
+      - name: "Setup Boost"
+        run: sudo apt install -y libboost-all-dev
+
       - name: "Setup Swift"
         uses: swift-actions/setup-swift@v1
         with:
