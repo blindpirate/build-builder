@@ -41,7 +41,7 @@ testing {
             targets {
                 all {
                     testTask {
-                        maxParallelForks = 2
+                        maxParallelForks = if(isCI) 1 else 2
                         systemProperty("skipTestCleanup", System.getProperty("skipTestCleanup"))
                         retry {
                             maxRetries.set(if (isCI) 1 else 0)
