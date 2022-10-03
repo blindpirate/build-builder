@@ -43,6 +43,8 @@ testing {
                     testTask {
                         maxParallelForks = if(isCI) 1 else 2
                         systemProperty("skipTestCleanup", System.getProperty("skipTestCleanup"))
+                        systemProperty("user.name", "BuildBuilderTestUser")
+                        systemProperty("user.home", layout.buildDirectory.dir("tmp/tests/user-home").get().asFile.canonicalPath)
                         retry {
                             maxRetries.set(if (isCI) 1 else 0)
                             maxFailures.set(20)
