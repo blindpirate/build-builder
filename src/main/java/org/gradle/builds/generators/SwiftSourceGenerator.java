@@ -4,6 +4,7 @@ import org.gradle.builds.model.*;
 
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.List;
 
 public class SwiftSourceGenerator extends ProjectComponentSpecificGenerator<HasSwiftSource> {
     public SwiftSourceGenerator() {
@@ -21,6 +22,22 @@ public class SwiftSourceGenerator extends ProjectComponentSpecificGenerator<HasS
         for (SwiftSourceFile swiftSource : component.getTestFiles()) {
             generateTestSourceFile(testDir, swiftSource, fileGenerator);
         }
+        generateSwiftLinuxMain(testDir, component.getTestFiles(), fileGenerator);
+    }
+
+    private void generateSwiftLinuxMain(Path testDir, List<SwiftSourceFile> testFiles, FileGenerator fileGenerator) throws IOException {
+        Path linuxMainFile = testDir.resolve("LinuxMain.swift");
+        fileGenerator.generate(linuxMainFile, printWriter -> {
+            printWriter.println("// GENERATED SOURCE FILE");
+            printWriter.println();
+            printWriter.println("import XCTest");
+            printWriter.println();
+            for (SwiftSourceFile testFile : testFiles) {
+                for (SwiftClass testClass : testFile.getClasses()) {
+                    printWriter.println("XCTMain([testCase([(\"testOk\", " + testClass.getName() + ".testOk)])])");
+                }
+            }
+        });
     }
 
     private void generateSourceFile(Path srcDir, SwiftSourceFile swiftSource, FileGenerator fileGenerator) throws IOException {
@@ -74,7 +91,7 @@ public class SwiftSourceGenerator extends ProjectComponentSpecificGenerator<HasS
             printWriter.println("// GENERATED SOURCE FILE");
             printWriter.println("import XCTest");
             for (String module : swiftSource.getModules()) {
-                printWriter.println("import " + module);
+                printWriter.println("@testable import " + module);
             }
             printWriter.println();
             for (SwiftClass swiftClass : swiftSource.getClasses()) {

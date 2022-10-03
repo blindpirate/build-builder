@@ -18,7 +18,7 @@ class SwiftBuildIntegrationTest extends AbstractSwiftIntegrationTest {
         new File(srcDir, "AppImplApi.swift").text.contains("let appimplcore = AppImplCore()")
 
         def testDir = rootProject.file("src/test/swift")
-        testDir.list() as Set == ["AppTest.swift", "AppImplApiTest.swift", "AppImplCoreTest.swift"] as Set
+        testDir.list() as Set == ["AppTest.swift", "AppImplApiTest.swift", "AppImplCoreTest.swift", "LinuxMain.swift"] as Set
         new File(testDir, "AppTest.swift").text.contains("import TestApp")
         new File(testDir, "AppTest.swift").text.contains("let app = App()")
 
@@ -41,11 +41,11 @@ class SwiftBuildIntegrationTest extends AbstractSwiftIntegrationTest {
         def srcDir = rootProject.file("src/main/swift")
         srcDir.list() as Set == ["main.swift", "AppImplApi.swift", "AppImplCore.swift"] as Set
 
-        rootProject.file("src/test/swift").list() as Set == ["AppTest.swift", "AppImplApiTest.swift", "AppImplCoreTest.swift"] as Set
+        rootProject.file("src/test/swift").list() as Set == ["AppTest.swift", "AppImplApiTest.swift", "AppImplCoreTest.swift", "LinuxMain.swift"] as Set
 
         def libProject = build.project(":lib").isSwiftLibrary()
         libProject.file("src/main/swift").list() as Set == ["Lib.swift", "LibImplApi.swift", "LibImplCore.swift"] as Set
-        libProject.file("src/test/swift").list() as Set == ["LibTest.swift", "LibImplApiTest.swift", "LibImplCoreTest.swift"] as Set
+        libProject.file("src/test/swift").list() as Set == ["LibTest.swift", "LibImplApiTest.swift", "LibImplCoreTest.swift", "LinuxMain.swift"] as Set
 
         rootProject.dependsOn(libProject)
         libProject.dependsOn()
@@ -83,11 +83,11 @@ class SwiftBuildIntegrationTest extends AbstractSwiftIntegrationTest {
         build.isBuild()
         build.rootProject.isSwiftApplication()
         build.rootProject.file("src/main/swift").list().size() == count
-        build.rootProject.file("src/test/swift").list().size() == count
+        build.rootProject.file("src/test/swift").list().size() == count + 1
 
         build.project(":libapi1").isSwiftLibrary()
         build.project(":libapi1").file("src/main/swift").list().size() == count
-        build.project(":libapi1").file("src/test/swift").list().size() == count
+        build.project(":libapi1").file("src/test/swift").list().size() == count + 1
 
         build.project(":libapi2").isSwiftLibrary()
         build.project(":libcore").isSwiftLibrary()
@@ -116,12 +116,12 @@ class SwiftBuildIntegrationTest extends AbstractSwiftIntegrationTest {
         new File(srcDir, "AppImplApi.swift").text.contains("import Lib")
         new File(srcDir, "AppImplApi.swift").text.contains("let lib = Lib()")
 
-        build.file("Tests/testAppTests").list() as Set == ["AppTest.swift", "AppImplApiTest.swift", "AppImplCoreTest.swift"] as Set
+        build.file("Tests/testAppTests").list() as Set == ["AppTest.swift", "AppImplApiTest.swift", "AppImplCoreTest.swift", "LinuxMain.swift"] as Set
 
         build.project(":lib").isSwiftPMProject()
         build.file("Sources/lib").list() as Set == ["Lib.swift", "LibImplApi.swift", "LibImplCore.swift"] as Set
 
-        build.file("Tests/libTests").list() as Set == ["LibTest.swift", "LibImplApiTest.swift", "LibImplCoreTest.swift"] as Set
+        build.file("Tests/libTests").list() as Set == ["LibTest.swift", "LibImplApiTest.swift", "LibImplCoreTest.swift", "LinuxMain.swift"] as Set
 
         build.buildSucceeds(":installDebug")
         build.app("build/install/main/debug/TestApp").succeeds()
