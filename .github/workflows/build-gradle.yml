@@ -4,8 +4,11 @@ on:
   push:
 
 jobs:
-  build-the-build-builder:
-    runs-on: ubuntu-latest
+  build-builder:
+    strategy:
+      matrix:
+        os: [ ubuntu-latest ]
+    runs-on: ${{ matrix.os }}
     steps:
 
       - name: "Checkout sources"
@@ -22,8 +25,17 @@ jobs:
         with:
           ndk-version: r20b
 
-      - name: "Setup Boost"
+      - name: "Setup Boost for Linux"
+        if: runner.os == 'Linux'
         run: sudo apt install -y libboost-all-dev
+
+      - name: "Setup Boost for macos"
+        if: runner.os == 'macOS'
+        run: brew install boost
+
+      - name: "Setup Boost for Windows"
+        if: runner.os == 'Windows'
+        run: echo TODO
 
       - name: "Setup Swift"
         uses: swift-actions/setup-swift@v1
