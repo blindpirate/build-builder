@@ -116,9 +116,9 @@ public class CppModelAssembler extends LanguageSpecificProjectConfigurer<CppAppl
     private void maybeAddBoost(CppHeaderFile privateHeader, BuildScript buildScript) {
         if (boost) {
             privateHeader.includeSystemHeader("boost/asio.hpp");
-        }
-        if (boost) {
-            buildScript.block("tasks.withType(AbstractLinkTask)").statement("linkerArgs.add('-lboost_system')");
+            ScriptBlock link = buildScript.block("tasks.withType(AbstractLinkTask).configureEach");
+            link.statement("linkerArgs.add('-lboost_system')");
+            link.statement("linkerArgs.add('-pthread')");
         }
     }
 
