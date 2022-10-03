@@ -1,3 +1,5 @@
+import org.gradle.api.tasks.testing.logging.TestLogEvent
+
 plugins {
     id("java")
     id("groovy")
@@ -41,15 +43,14 @@ testing {
             targets {
                 all {
                     testTask {
-                        maxParallelForks = if(isCI) 1 else 2
+                        maxParallelForks = 2
                         systemProperty("skipTestCleanup", System.getProperty("skipTestCleanup"))
                         systemProperty("user.name", "BuildBuilderTestUser")
                         systemProperty("user.home", layout.buildDirectory.dir("tmp/tests/user-home").get().asFile.canonicalPath)
                         retry {
                             maxRetries.set(if (isCI) 1 else 0)
                             maxFailures.set(20)
-                            // TODO set this to `true` once less flaky
-                            failOnPassedAfterRetry.set(!isCI)
+                            failOnPassedAfterRetry.set(true)
                         }
                     }
                 }
